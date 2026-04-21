@@ -19,16 +19,7 @@ object PrivilegeApiHook {
 
     private const val PRIVILEGE_API_KEYWORD = "/member/privilege/"
 
-    private val MOCK_PRIVILEGE_RESPONSE =
-        """{"code":200,"message":"success","data":["""
-            + """{"memberPrivilegeId":1,"enabled":1},"""
-            + """{"memberPrivilegeId":2,"enabled":1},"""
-            + """{"memberPrivilegeId":3,"enabled":1},"""
-            + """{"memberPrivilegeId":4,"enabled":1},"""
-            + """{"memberPrivilegeId":5,"enabled":1},"""
-            + """{"memberPrivilegeId":6,"enabled":1},"""
-            + """{"memberPrivilegeId":7,"enabled":1}"""
-            + """]}"""
+    private val MOCK_PRIVILEGE_RESPONSE = """{"code":200,"message":"success","data":[{"memberPrivilegeId":1,"enabled":1},{"memberPrivilegeId":2,"enabled":1},{"memberPrivilegeId":3,"enabled":1},{"memberPrivilegeId":4,"enabled":1},{"memberPrivilegeId":5,"enabled":1},{"memberPrivilegeId":6,"enabled":1},{"memberPrivilegeId":7,"enabled":1}]}"""
 
     fun hook(classLoader: ClassLoader) {
         XposedLog.i("====== 开始 Hook 特权 API 拦截 ======")
