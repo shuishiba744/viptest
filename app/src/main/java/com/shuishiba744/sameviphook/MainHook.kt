@@ -2,6 +2,7 @@ package com.shuishiba744.sameviphook
 
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.callbacks.XC_LoadPackage
+import com.shuishiba744.sameviphook.hook.PrivilegeApiHook
 import com.shuishiba744.sameviphook.hook.VipStatusHook
 import com.shuishiba744.sameviphook.hook.VipInfoHook
 import com.shuishiba744.sameviphook.hook.MiscHook
@@ -16,15 +17,15 @@ import com.shuishiba744.sameviphook.utils.XposedLog
  * 适配版本: v6.2.2 (versionCode 6202)
  *
  * Hook 架构:
- *   ┌─────────────────────────────────────────────┐
- *   │           MainHook.handleLoadPackage()       │
- *   │  ┌─────────────┬────────────┬─────────────┐ │
- *   │  │ VipStatus   │ VipInfo    │ Misc        │ │
- *   │  │ Hook (★★★)  │ Hook (★★)  │ Hook (★)    │ │
- *   │  │ 10个isVip   │ level+     │ isPaid      │ │
- *   │  │ 方法群      │ expiresAt  │ 订单状态    │ │
- *   │  └─────────────┴────────────┴─────────────┘ │
- *   └─────────────────────────────────────────────┘
+ *   ┌─────────────────────────────────────────────────────────────┐
+ *   │               MainHook.handleLoadPackage()                   │
+ *   │  ┌──────────────┬────────────┬────────────┬───────────────┐ │
+ *   │  │ PrivilegeApi │ VipStatus  │ VipInfo   │ Misc           │ │
+ *   │  │ Hook (★★★)   │ Hook (★★★) │ Hook (★★) │ Hook (★)       │ │
+ *   │  │ OkHttp响应拦截│ 10个isVip  │ level+    │ isPaid         │ │
+ *   │  │ Privilege模型│ 方法群     │ expiresAt │ 订单状态       │ │
+ *   │  └──────────────┴────────────┴────────────┴───────────────┘ │
+ *   └─────────────────────────────────────────────────────────────┘
  *
  * 进程过滤: 仅在 com.same.android 的主进程中执行 Hook，
  * 严格避免 Hook 系统进程和其他无关应用进程
@@ -59,6 +60,13 @@ class MainHook : IXposedHookLoadPackage {
         val classLoader = lpparam.classLoader
 
         // ========== 3. 执行 Hook（每组独立异常隔离） ==========
+
+        // ★★★ 特权 API 网络响应拦截（服务端 403 → Mock 成功数据）
+        try {
+            PrivilegeApiHook.hook(classLoader)
+        } catch (t: Throwable) {
+            XposedLog.e("特权 API Hook 组执行异常（已隔离，不影响其他 Hook）", t)
+        }
 
         // ★★★ VIP 状态判断方法群（10个方法，最高优先级）
         try {
