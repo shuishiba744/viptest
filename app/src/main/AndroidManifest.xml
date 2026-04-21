@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:label="SameVipHook"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
+        <!-- ==================== LSPosed 模块声明 ==================== -->
+
+        <!-- 声明这是一个 Xposed/LSPosed 模块 -->
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+
+        <!-- 模块描述（LSPosed Manager 中显示） -->
+        <meta-data
+            android:name="xposeddescription"
+            android:value="Same App VIP 功能解锁模块（学习研究用途）| 适配 v6.2.2" />
+
+        <!-- 最低 LSPosed API 版本（93 = LSPosed 基线版本） -->
+        <meta-data
+            android:name="xposedminversion"
+            android:value="93" />
+
+        <!-- 模块作用域：仅作用于 com.same.android -->
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@xml/xposed_scope" />
+
+        <!-- 支持 SharedPreferences 持久化配置 -->
+        <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
+
+    </application>
+
+</manifest>

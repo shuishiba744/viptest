@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- LSPosed 模块作用域配置 -->
+    <string-array name="xposed_scope">
+        <item>com.same.android</item>
+    </string-array>
+</resources>
