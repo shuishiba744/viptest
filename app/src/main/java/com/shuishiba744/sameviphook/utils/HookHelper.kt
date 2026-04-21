@@ -37,11 +37,10 @@ object HookHelper {
         classLoader: ClassLoader,
         className: String,
         methodName: String,
-        vararg paramTypes: Any?,
-        callback: XC_MethodHook
+        vararg args: Any
     ): Boolean {
         return try {
-            XposedHelpers.findAndHookMethod(className, classLoader, methodName, *paramTypes, callback)
+            XposedHelpers.findAndHookMethod(className, classLoader, methodName, *args)
             XposedLog.i("Hook 成功: $className.$methodName")
             true
         } catch (t: Throwable) {
